@@ -1,34 +1,23 @@
 import express from 'express';
-import fs, { promises as fsPromises } from 'fs';
-import sharp from 'sharp';
+import imageController from '../controllers/imageController';
+import path from 'path';
 const router = express.Router();
 
-router.get('/', async (req: express.Request, res: express.Response): Promise<void> => {
-  try {
-    const dirName = __dirname + '/../../images/converted';
-    const dirFull = __dirname + '/../../images/full';
-    console.log('dirname', dirName);
-    if (!fs.existsSync(dirName)) {
-        await fsPromises.mkdir(dirName);
+router.get(
+  '/:file',
+  async (req: express.Request, res: express.Response): Promise<void> => {
+    const filename = req.params.file;
+    try {
+      const ret = await imageController.convert(filename);
+      if (ret) {
+        res.sendFile(path.resolve(ret));
+      } else {
+        res.status(500).send('Erro desconhecido!');
+      }
+    } catch (err: any) {
+      res.status(500).send(err.message);
     }
-    const dir = await fsPromises.readdir(dirFull);
-    dir.map(async (item: string) => {
-        const newFile = dirName + '/' + item;
-        if (!fs.existsSync(newFile)) {
-            try {
-                await sharp(`${dirFull}/${item}`)
-                  .resize({ width: 200 })
-                  .toFile(dirName + '/' + item);
-            } catch (e) {
-                res.status(500).send(`Error converting ${item}: ${e.message} (${e.name})`);
-            }
-        }
-     });
-      
-     res.status(200).send('Convertido com sucesso!');
-  } catch (err) {
-    console.error('Error occured while reading directory!', err);
   }
-});
+);
 
 export default router;

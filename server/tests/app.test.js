@@ -14,13 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
-describe("Test app main routes", () => {
-    it("GET /convert = CONVERT IMAGES", () => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, supertest_1.default)(index_1.default)
-            .get("/convert")
-            .expect(200)
-            .then((response) => {
-            expect(response.text).toEqual("Convertido com sucesso!");
-        });
+describe('Test app main routes', () => {
+    it('GET /convert/fjord.jpg = HAVE TO CONVERT THE IMAGE SUCCESSFULLY', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord.jpg').expect(200);
+    }));
+    it('GET /convert/fjord1.jpg = HAVE NOT TO CONVERT THE IMAGE', () => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord1.jpg').expect(500);
     }));
 });
