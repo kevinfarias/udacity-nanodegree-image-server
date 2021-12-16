@@ -1,0 +1,62 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "jasmine": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "2020",
+        "sourceType": "module"
+    },
+    "extends": [
+        "eslint:recommended",
+        "prettier"
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "settings": {},
+    "globals": {},
+    "rules": {
+        
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.test.ts"
+            ],
+            "rules": {
+                "max-lines-per-function": [
+                    "error",
+                    {
+                        "max": 200,
+                        "skipBlankLines": true,
+                        "skipComments": true
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "knex/*/*.ts"
+            ],
+            "rules": {
+                "filenames/match-regex": [
+                    "error",
+                    "^[a-zA-Z0-9_]+$"
+                ]
+            }
+        },
+        {
+            "files": [
+                "src/*.test.ts"
+            ],
+            "rules": {
+                "fp/no-let": [
+                    "off"
+                ]
+            }
+        }
+    ]
+}
