@@ -16,10 +16,16 @@ const express_1 = __importDefault(require("express"));
 const imageController_1 = __importDefault(require("../controllers/imageController"));
 const path_1 = __importDefault(require("path"));
 const router = express_1.default.Router();
-router.get('/:file/:width/:height', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/:file?/:width?/:height?', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filename = req.params.file;
     const width = Number(req.params.width);
     const height = Number(req.params.height);
+    if (!filename || !width || !height) {
+        res
+            .status(400)
+            .send('Sorry, one of the following required parameters was not passed: /convert/{filenameDotExtension}/{width}/{height}');
+        return;
+    }
     try {
         const ret = yield imageController_1.default.convert(filename, width, height);
         if (ret) {
