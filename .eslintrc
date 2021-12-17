@@ -19,7 +19,7 @@
     "settings": {},
     "globals": {},
     "rules": {
-        
+        "prefer-template": 2
     },
     "overrides": [
         {

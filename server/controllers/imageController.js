@@ -34,11 +34,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importStar(require("fs"));
 const sharp_1 = __importDefault(require("sharp"));
 class imageController {
-    static convert(image) {
+    static convert(image, width, height) {
         return __awaiter(this, void 0, void 0, function* () {
-            const dirName = __dirname + '/../../images/converted';
-            const dirFull = __dirname + '/../../images/full';
-            const fileName = dirFull + '/' + image;
+            const dirName = `${__dirname}/../../images/converted`;
+            const dirFull = `${__dirname}/../../images/full`;
+            const fileName = `${dirFull}/${image.replace('.jpg', '')}.jpg`;
             /* create output dir if not exists */
             if (!fs_1.default.existsSync(dirName)) {
                 yield fs_1.promises.mkdir(dirName);
@@ -47,10 +47,10 @@ class imageController {
             if (!fs_1.default.existsSync(fileName)) {
                 throw new Error(`Image ${fileName} does not exists!`);
             }
-            const newFile = dirName + '/' + image;
+            const newFile = `${dirName}/${image.replace('.jpg', '')}_${width}x${height}.jpg`;
             if (!fs_1.default.existsSync(newFile)) {
                 yield (0, sharp_1.default)(fileName)
-                    .resize({ width: 200 })
+                    .resize({ width, height })
                     .toFile(newFile)
                     .catch((e) => {
                     console.log('error', e);

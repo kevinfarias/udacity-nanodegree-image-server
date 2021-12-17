@@ -4,11 +4,13 @@ import path from 'path';
 const router = express.Router();
 
 router.get(
-  '/:file',
+  '/:file/:width/:height',
   async (req: express.Request, res: express.Response): Promise<void> => {
     const filename = req.params.file;
+    const width = Number(req.params.width);
+    const height = Number(req.params.height);
     try {
-      const ret = await imageController.convert(filename);
+      const ret = await imageController.convert(filename, width, height);
       if (ret) {
         res.sendFile(path.resolve(ret));
       } else {

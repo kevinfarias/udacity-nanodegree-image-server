@@ -37,23 +37,24 @@ const imageController_1 = __importDefault(require("../controllers/imageControlle
 const fs_1 = __importStar(require("fs"));
 describe('Test app main routes', () => {
     it('GET /convert/fjord.jpg = HAVE TO CONVERT THE IMAGE SUCCESSFULLY', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord.jpg').expect(200);
+        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord.jpg/300/300').expect(200);
     }));
     it('GET /convert/fjord1.jpg = HAVE NOT TO CONVERT THE IMAGE', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord1.jpg').expect(500);
+        yield (0, supertest_1.default)(index_1.default).get('/convert/fjord1.jpg/300/300').expect(500);
     }));
 });
 describe('Unit testing', () => __awaiter(void 0, void 0, void 0, function* () {
-    const dirName = __dirname + '/../../images/converted';
-    const fileName = 'fjord.jpg';
+    const dirName = `${__dirname}/../../images/converted`;
+    const pureName = 'fjord.jpg';
+    const fileName = 'fjord_300x300.jpg';
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        if (fs_1.default.existsSync(dirName + '/' + fileName)) {
-            yield fs_1.promises.unlink(dirName + '/' + fileName);
+        if (fs_1.default.existsSync(`${dirName}/${fileName}`)) {
+            yield fs_1.promises.unlink(`${dirName}/${fileName}`);
         }
     }));
     it('Test creating image', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield imageController_1.default.convert(fileName);
-        const exists = fs_1.default.existsSync(dirName + '/' + fileName);
+        yield imageController_1.default.convert(pureName, 300, 300);
+        const exists = fs_1.default.existsSync(`${dirName}/${fileName}`);
         expect(exists).toBeTruthy();
     }));
 }));
